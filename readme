@@ -1,0 +1,68 @@
+PROJEKAT: Klasifikacija proizvoda po kategorijama (tehnomedija)
+
+opis: api koji kada mu posaljes naziv i opis proizvoda on ga klasifikuje u predefinisane klase.
+
+Ciljevi:
+1) Dobro prikupljeni podaci (skrejpovanje aug itd...)
+2) Model koji ima dobre performanse (visok f1) (analiziraj retke klase)
+3) Napravi api od modela...
+4) napravi monitoring
+5) Dokumentuj sve lepo
+
+
+1) 
+Skrejpovanje {https://www.tehnomedija.rs} scrapy + b4s(ciscenje) => .csv sa atributima naziv, opis, klase
+(klase su kategorije kojim pripadaju artikli)
+
+dodavanje proizvoda manjim klasama(balansiranje, uz pomoc neta) i opise tamo gde ne postoje (neki stariji besplatan gpt ili tako nesto...) // nije bilo potrebno
+
+** javio se "problem" dva ispta naziva vise klasa, to ustvari nije problem jer nas api vraca verovatnocu da je u nekoj klasi....
+
+2) 
+(podeli podatke train/test) 
+Istrazi koji bi modeli bili najbolji za ovu namenu i testiraj, dok ne dobijes visok f1.
+
+dobri modeli: tfidf + logistic, bert neki....
+
+(gpt kaze: Pored F1-score-a, prati i preciznost i odziv po klasama.)
+
+3) 
+FastAPI (jer je moderniji i brzi, malo je tezi...)
+ulazni format: json {'naziv': , 'opis': }
+izlazni format: sortirana lista tuplova [(klasa1: p(klasa1)),(klasa2: p(klasa2),...)]  (p(klasa) = verovatnoca da je klasa)
+i testiraj... nad
+
+4) 
+Istrazi...
+
+5) 
+Za sve korake i sav kod ostavljaj komentare ili .readme.
+=========================================================
+
+zakljucak:
+
+**projekat: uspesan
+
+podaci skupljeni scarpy tehnomedija (4494 test samples i 18223 train samples)
+model = tf-idf + logistic regression (f1 98%) (preprocessing lowercasing, sklanjanje sifara...)
+
+fastapi radi kako treba sve....
+
+
+
+**moguca poboljsanja bi bila:
+podaci sa vise ecommerce sajtova tog tipa....
+
+fastapi da naucis vise....
+
+**zapazanja:
+
+neki sajtovi tipa tehnomanije imaju jaku zastitu od skrejpovanja...
+
+Previse jednostavan problem, u svakom nazivu pise sta je i modelu je onda prelako da klasifikuje
+
+fastapi moras jos da provezbas, kada bi trebalo nesto ozbiljnije da se radi u njemu...
+
+zyte odlican sajt za skrejpovanje / mana samo sat vremena skrejpovanja....
+
+
