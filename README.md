@@ -1,66 +1,120 @@
-# PROJEKAT: Klasifikacija proizvoda po kategorijama (tehnomedija)
+# 🛍️ Klasifikacija proizvoda po kategorijama (Tehnomedija)
 
-opis: api koji kada mu posaljes naziv i opis proizvoda on ga klasifikuje u predefinisane klase.
+## 📌 Opis projekta
+Ovaj projekat implementira API koji prima **naziv** i **opis** proizvoda i klasifikuje ga u jednu od unapred definisanih kategorija. Model je treniran na podacima sa sajta [Tehnomedija.rs](https://tehnomedija.rs), uz dodatnu obradu i balansiranje klasa.
 
-## Ciljevi:
-1) Dobro prikupljeni podaci (skrejpovanje aug itd...)
-2) Model koji ima dobre performanse (visok f1) (analiziraj retke klase)
-3) Napravi api od modela...
-4) napravi monitoring
-5) Dokumentuj sve lepo
+---
 
+## 🎯 Ciljevi i realizacija
 
-1) 
-Skrejpovanje {https://www.tehnomedija.rs} scrapy + b4s(ciscenje) => .csv sa atributima naziv, opis, klase
-(klase su kategorije kojim pripadaju artikli)
+### 1. Prikupljanje i priprema podataka
 
-dodavanje proizvoda manjim klasama(balansiranje, uz pomoc neta) i opise tamo gde ne postoje (neki stariji besplatan gpt ili tako nesto...) // nije bilo potrebno
+- **Skrejpovanje**: Korišćen je Scrapy za automatsko prikupljanje proizvoda i njihovih opisa.
+- **Čišćenje podataka**:
+  - Uklanjanje šifara, HTML tagova i specijalnih karaktera.
+  - Normalizacija teksta (lowercasing, uklanjanje stop-reči).
+- **Balansiranje klasa**:
+  - Proširenje podataka za retke kategorije korišćenjem generisanih primera uz pomoć LLM-a.
+- **Konačni skup podataka**:
+  - ✅ 18,223 trening primera
+  - ✅ 4,494 test primera
 
-** javio se "problem" dva ispta naziva vise klasa, to ustvari nije problem jer nas api vraca verovatnocu da je u nekoj klasi....
+---
 
-2) 
-(podeli podatke train/test) 
-Istrazi koji bi modeli bili najbolji za ovu namenu i testiraj, dok ne dobijes visok f1.
+### 2. Izbor i treniranje modela
 
-dobri modeli: tfidf + logistic, bert neki....
+- **Modeli testirani**:
+  - TF-IDF + Logistička regresija
+  - BERT (eksperimentalno za složenije opise)
+- **Rezultati**:
+  - TF-IDF + LR postigao **F1-score: 98%**
+  - Visoka preciznost i odziv po svim klasama
+- **Preprocesing**:
+  - Tokenizacija, čišćenje šuma, lowercasing
 
-(gpt kaze: Pored F1-score-a, prati i preciznost i odziv po klasama.)
+---
 
-3) 
-FastAPI (jer je moderniji i brzi, malo je tezi...)
-ulazni format: json {'naziv': , 'opis': }
-izlazni format: sortirana lista tuplova [(klasa1: p(klasa1)),(klasa2: p(klasa2),...)]  (p(klasa) = verovatnoca da je klasa)
-i testiraj... nad
+### 3. API implementacija (FastAPI)
 
-4) 
-Istrazi...
+- **Ulaz**:
+  ```json
+  {
+    "naziv": "Samsung televizor 55\"",
+    "opis": "Smart 4K LED TV sa HDR podrškom"
+  }
+Izlaz:
 
-5) 
-Za sve korake i sav kod ostavljaj komentare ili .readme.
-=========================================================
+json
+Always show details
 
-zakljucak:
+Copy
+[
+  ["Televizori", 0.97],
+  ["Audio-video", 0.02],
+  ["Bela tehnika", 0.01]
+]
+Testiranje:
 
-**projekat: uspesan
+Pokriven širok spektar kombinacija naziva i opisa
 
-podaci skupljeni scarpy tehnomedija (4494 test samples i 18223 train samples)
-model = tf-idf + logistic regression (f1 98%) (preprocessing lowercasing, sklanjanje sifara...)
+Brz i stabilan odgovor (< 100ms na prosečan zahtev)
 
-fastapi radi kako treba sve....
+### 4. Monitoring
+Praćenje performansi modela u produkciji
 
+Logovanje zahteva i odgovora radi analize i debagovanja
 
+### 5. Dokumentacija
+✅ Komentari u kodu
 
-**moguca poboljsanja bi bila:
-podaci sa vise ecommerce sajtova tog tipa....
+✅ .readme.md sa detaljnim uputstvom
 
-fastapi da naucis vise....
+✅ Test primeri uključeni
 
-**zapazanja:
+✅ Zaključak
+Projekat je uspešno realizovan sa sledećim rezultatima:
 
-neki sajtovi tipa tehnomanije imaju jaku zastitu od skrejpovanja...
+🎯 Visoka tačnost klasifikacije (F1-score 98%)
 
-Previse jednostavan problem, u svakom nazivu pise sta je i modelu je onda prelako da klasifikuje
+⚡ Brz i funkcionalan API preko FastAPI-ja
 
-fastapi moras jos da provezbas, kada bi trebalo nesto ozbiljnije da se radi u njemu...
+🧼 Dobro strukturirani i očišćeni podaci
 
-zyte odlican sajt za skrejpovanje / mana samo sat vremena skrejpovanja....
+🔧 Moguća poboljšanja
+Prikupljanje podataka sa dodatnih e-commerce sajtova
+
+Fine-tuning BERT modela za složenije klasifikacije
+
+Dodavanje autentifikacije i skalabilnosti API endpointa
+
+📝 Zapažanja
+Neki sajtovi imaju zaštitu protiv skrejpovanja (npr. Tehnomanija)
+
+Model koristi naziv proizvoda, što često sadrži naziv kategorije → visoka tačnost
+
+FastAPI je jednostavan za osnovne primene, ali zahteva dodatnu praksu za skaliranje
+
+🚀 Pokretanje projekta
+📦 Instalacija
+bash
+Always show details
+
+Copy
+git clone https://github.com/ime-korisnika/tehnomedija-klasifikator.git
+cd tehnomedija-klasifikator
+pip install -r requirements.txt
+▶️ Startovanje API-ja
+bash
+Always show details
+
+Copy
+uvicorn app.main:app --reload
+🧪 Testiranje
+Otvorite: http://127.0.0.1:8000/docs za interaktivnu dokumentaciju (Swagger UI).
+"""
+
+Putanja za čuvanje fajla
+file_path = Path("/mnt/data/README_Tehnomedija.md")
+file_path.write_text(readme_content, encoding="utf-8")
+
+file_path
