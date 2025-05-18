@@ -74,47 +74,28 @@ Logovanje zahteva i odgovora radi analize i debagovanja
 ✅ Zaključak
 Projekat je uspešno realizovan sa sledećim rezultatima:
 
-🎯 Visoka tačnost klasifikacije (F1-score 98%)
+=================================================================================================================================
 
-⚡ Brz i funkcionalan API preko FastAPI-ja
+##### 🎯 Visoka tačnost klasifikacije (F1-score 98%)
 
-🧼 Dobro strukturirani i očišćeni podaci
+##### ⚡ Brz i funkcionalan API preko FastAPI-ja
 
-🔧 Moguća poboljšanja
+##### 🧼 Dobro strukturirani i očišćeni podaci
+
+#### 🔧 Moguća poboljšanja
+
 Prikupljanje podataka sa dodatnih e-commerce sajtova
 
 Fine-tuning BERT modela za složenije klasifikacije
 
 Dodavanje autentifikacije i skalabilnosti API endpointa
 
-📝 Zapažanja
+#### 📝 Zapažanja
 Neki sajtovi imaju zaštitu protiv skrejpovanja (npr. Tehnomanija)
 
 Model koristi naziv proizvoda, što često sadrži naziv kategorije → visoka tačnost
 
 FastAPI je jednostavan za osnovne primene, ali zahteva dodatnu praksu za skaliranje
 
-🚀 Pokretanje projekta
-📦 Instalacija
-bash
-Always show details
 
-Copy
-git clone https://github.com/ime-korisnika/tehnomedija-klasifikator.git
-cd tehnomedija-klasifikator
-pip install -r requirements.txt
-▶️ Startovanje API-ja
-bash
-Always show details
 
-Copy
-uvicorn app.main:app --reload
-🧪 Testiranje
-Otvorite: http://127.0.0.1:8000/docs za interaktivnu dokumentaciju (Swagger UI).
-"""
-
-Putanja za čuvanje fajla
-file_path = Path("/mnt/data/README_Tehnomedija.md")
-file_path.write_text(readme_content, encoding="utf-8")
-
-file_path
